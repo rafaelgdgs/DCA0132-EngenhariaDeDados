@@ -1,0 +1,42 @@
+version: 2.24.7
+
+services:
+  servidor:
+    container_name: servidor-compose-tcp
+    image: rafaelgdgs/servidortcp:v1
+    tty: true
+    restart: always
+    networks:
+      minha-rede:
+        ipv4_address: 172.18.0.2
+
+  cliente:
+    container_name: cliente-compose-tcp
+    depends_on:
+      - servidor
+    image: rafaelgdgs/clientetcp:v1
+    tty: true
+    restart: always
+    command: 172.18.0.2
+    networks:
+      - minha-rede
+
+  cliente2:
+    container_name: cliente2-compose-tcp
+    depends_on:
+      - servidor
+      - cliente
+    image: rafaelgdgs/clientetcp:v1
+    tty: true
+    restart: always
+    command: 172.18.0.2
+    networks:
+      - minha-rede
+
+networks:
+  minha-rede:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.18.0.0/24

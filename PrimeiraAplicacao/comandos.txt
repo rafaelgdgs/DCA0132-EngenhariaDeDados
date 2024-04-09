@@ -1,0 +1,22 @@
+Aluno: Rafael Gomes Dantas Gurgel Siqueira
+
+Inicialmente foi baixado os arquivos "clienteTCP.py" e "servidorTCP.py" da atividade e criado os respectivos Dockerfiles, um para o cliente e outro para o servidor, em ambos foi criado uma imagem simples que copia o arquivo em python para dentro do WORKDIR e tem como entrypoint a execução do script.
+
+Após isso, foi criado o repositório no DockerHub para as duas imagens:
+Servidor: https://hub.docker.com/repository/docker/rafaelgdgs/servidortcp/general
+Cliente: https://hub.docker.com/repository/docker/rafaelgdgs/clientetcp/general
+
+Em seguida foi feito o build das imagens, para a do cliente foi usado o comando:
+docker build -f Dockerfile.client -t rafaelgdgs/clientetcp:v1 .
+
+E para o servidor foi utilizado o comando:
+docker build -f Dockerfile.server -t rafaelgdgs/servidortcp:v1 .
+
+Em seguida foi feito o login no docker com o comando:
+docker login
+
+E o envio das imagens com o comando:
+Cliente: docker push rafaelgdgs/clientetcp:v1
+Servidor: docker push rafaelgdgs/servidortcp:v1
+
+E então foi criado o arquivo "docker-compose.yml" com instruções para criar um container servidor e dois clientes, todos na mesma network "minha-rede" e os clientes com a opção de "restart: always" para que ficassem mandando request para o servidor constantemente, o servidor possui ipv4 fixo e o ipv4 escolhido para o servidor foi inserido nos dois clientes via "command: " para que eles soubessem em qual ip o servidor estaria.
